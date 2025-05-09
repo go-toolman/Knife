@@ -31,8 +31,8 @@ jobs:
       -
         name: Docker exec
         run: |
-          docker exec -it kaiwudb ./kwbase sql --insecure --host=127.0.0.1 -e "CREATE DATABASE IF NOT EXISTS testdb;"
-          docker exec -it kaiwudb ./kwbase sql --insecure --host=127.0.0.1 -e "CREATE TABLE IF NOT EXISTS testdb.public.testtable (id INT PRIMARY KEY, name VARCHAR(255));"
-          docker exec -it kaiwudb./kwbase sql --insecure --host=127.0.0.1 -e "INSERT INTO testdb.public.testtable (id, name) VALUES (1, 'John Doe');"
-          docker exec -it kaiwudb./kwbase sql --insecure --host=127.0.0.1 -e "INSERT INTO testdb.public.testtable (id, name) VALUES (2, 'Jane Doe');"
-          docker exec -it kaiwudb./kwbase sql --insecure --host=127.0.0.1 -e "SELECT * FROM testdb.public.testtable;"
+          docker exec kaiwudb ./kwbase sql --insecure --host=127.0.0.1 -e "CREATE DATABASE IF NOT EXISTS testdb;"
+          docker exec kaiwudb ./kwbase sql --insecure --host=127.0.0.1 -e "CREATE TABLE IF NOT EXISTS testdb.public.testtable (id INT PRIMARY KEY, name VARCHAR(255));"
+          docker exec kaiwudb./kwbase sql --insecure --host=127.0.0.1 -e "INSERT INTO testdb.public.testtable (id, name) VALUES (1, 'John Doe');"
+          docker exec kaiwudb./kwbase sql --insecure --host=127.0.0.1 -e "INSERT INTO testdb.public.testtable (id, name) VALUES (2, 'Jane Doe');"
+          docker exec kaiwudb./kwbase sql --insecure --host=127.0.0.1 -e "SELECT * FROM testdb.public.testtable;"
