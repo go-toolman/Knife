@@ -15,18 +15,6 @@ jobs:
       -
         name: Set up Docker
         uses: docker/setup-docker-action@v4
-      - 
-        name: Check out
-        uses: actions/checkout@v4
-      - 
-        name: Clone KWDB TSBS  
-        run: |
-            git clone https://gitee.com/kwdb/kwdb-tsbs.git
-      - uses: actions/setup-go@v5
-      - name: Make
-        working-directory: ./kwdb-tsbs
-        run: |
-          make
       -
         name: Docker run
         run: |
@@ -43,6 +31,18 @@ jobs:
                 --listen-addr=0.0.0.0:26257 \
                 --http-addr=0.0.0.0:8080 \
                 --store=/kaiwudb/deploy/kaiwudb-container
+      - 
+        name: Check out
+        uses: actions/checkout@v4
+      - 
+        name: Clone KWDB TSBS  
+        run: |
+            git clone https://gitee.com/kwdb/kwdb-tsbs.git
+      - uses: actions/setup-go@v5
+      - name: Make
+        working-directory: ./kwdb-tsbs
+        run: |
+          make
       # -
       #   name: Download KWDB TSBS
       #   run: |
@@ -62,7 +62,6 @@ jobs:
               --timestamp-end="2023-01-02T01:00:00Z" \
               --log-interval="10s" \
               --orderquantity=12 > data.dat
-          ls
       -
         name: Load Data
         working-directory: ./kwdb-tsbs/bin/
