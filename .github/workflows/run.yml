@@ -49,9 +49,7 @@ jobs:
       -
         name: Generate Data
         run: |
-          ls
-          cd kwdb-tsbs/bin
-          ./tsbs_generate_data \
+          ./kwdb-tsbs/bin/tsbs_generate_data \
               --format="kwdb" \
               --use-case="cpu-only" \
               --seed=123 \
@@ -60,49 +58,50 @@ jobs:
               --timestamp-end="2023-01-02T01:00:00Z" \
               --log-interval="10s" \
               --orderquantity=12 > data.dat
-      # -
-      #   name: Load Data
-      #   run: |
-      #     ./tsbs_load_kwdb \
-      #         --file=data.dat \
-      #         --user=root \
-      #         --password= \
-      #         --host=127.0.0.1 \
-      #         --port=26257 \
-      #         --insert-type=insert \
-      #         --batch-size=1000 \
-      #         --db-name=benchmark \
-      #         --case=cpu-only \
-      #         --workers=12 \
-      #         --partition=false
-      # -
-      #   name: Generate Queries
-      #   run: |
-      #    ./tsbs_generate_queries \
-      #         --format="kwdb" \
-      #         --use-case="cpu-only" \
-      #         --seed=123 \
-      #         --scale=100 \
-      #         --timestamp-start="2023-01-01T00:00:00Z" \
-      #         --timestamp-end="2023-01-05T01:00:00Z" \
-      #         --query-type="single-groupby-1-1-1" \
-      #         --queries=100 \
-      #         --db-name=benchmark > query.dat
-      # -
-      #   name: Run Queries
-      #   run: |
-      #    ./tsbs_run_queries_kwdb \
-      #         --file=query.dat \
-      #         --user=root \
-      #         --password= \
-      #         --host=127.0.0.1 \
-      #         --port=26257 \
-      #         --workers=1
-      # -
-      #   name: Docker exec
-      #   run: |
-      #     docker exec kaiwudb ./kwbase sql --insecure --host=127.0.0.1 -e "CREATE DATABASE IF NOT EXISTS testdb;"
-      #     docker exec kaiwudb ./kwbase sql --insecure --host=127.0.0.1 -e "CREATE TABLE IF NOT EXISTS testdb.public.testtable (id INT PRIMARY KEY, name VARCHAR(255));"
-      #     docker exec kaiwudb ./kwbase sql --insecure --host=127.0.0.1 -e "INSERT INTO testdb.public.testtable (id, name) VALUES (1, 'John Doe');"
-      #     docker exec kaiwudb ./kwbase sql --insecure --host=127.0.0.1 -e "INSERT INTO testdb.public.testtable (id, name) VALUES (2, 'Jane Doe');"
-      #     docker exec kaiwudb ./kwbase sql --insecure --host=127.0.0.1 -e "SELECT * FROM testdb.public.testtable;"
+          ls
+      -
+        name: Load Data
+        run: |
+          ./kwdb-tsbs/bin/tsbs_load_kwdb \
+              --file=data.dat \
+              --user=root \
+              --password= \
+              --host=127.0.0.1 \
+              --port=26257 \
+              --insert-type=insert \
+              --batch-size=1000 \
+              --db-name=benchmark \
+              --case=cpu-only \
+              --workers=12 \
+              --partition=false
+      -
+        name: Generate Queries
+        run: |
+         ./kwdb-tsbs/bin/tsbs_generate_queries \
+              --format="kwdb" \
+              --use-case="cpu-only" \
+              --seed=123 \
+              --scale=100 \
+              --timestamp-start="2023-01-01T00:00:00Z" \
+              --timestamp-end="2023-01-05T01:00:00Z" \
+              --query-type="single-groupby-1-1-1" \
+              --queries=100 \
+              --db-name=benchmark > query.dat
+      -
+        name: Run Queries
+        run: |
+         ./kwdb-tsbs/bin/tsbs_run_queries_kwdb \
+              --file=query.dat \
+              --user=root \
+              --password= \
+              --host=127.0.0.1 \
+              --port=26257 \
+              --workers=1
+      -
+        name: Docker exec
+        run: |
+          docker exec kaiwudb ./kwbase sql --insecure --host=127.0.0.1 -e "CREATE DATABASE IF NOT EXISTS testdb;"
+          docker exec kaiwudb ./kwbase sql --insecure --host=127.0.0.1 -e "CREATE TABLE IF NOT EXISTS testdb.public.testtable (id INT PRIMARY KEY, name VARCHAR(255));"
+          docker exec kaiwudb ./kwbase sql --insecure --host=127.0.0.1 -e "INSERT INTO testdb.public.testtable (id, name) VALUES (1, 'John Doe');"
+          docker exec kaiwudb ./kwbase sql --insecure --host=127.0.0.1 -e "INSERT INTO testdb.public.testtable (id, name) VALUES (2, 'Jane Doe');"
+          docker exec kaiwudb ./kwbase sql --insecure --host=127.0.0.1 -e "SELECT * FROM testdb.public.testtable;"
