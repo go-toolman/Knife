@@ -1,0 +1,107 @@
+name: Docker
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Set up Docker
+        uses: docker/setup-docker-action@v4
+      - 
+        name: Check out
+        uses: actions/checkout@v4
+      - 
+        name: Clone KWDB TSBS  
+        run: |
+            git clone https://gitee.com/kwdb/kwdb-tsbs.git
+      - uses: actions/setup-go@v5
+      - name: Make
+        run: |
+          cd kwdb-tsbs
+          make
+      -
+        name: Docker run
+        run: |
+          docker run -d --privileged --name kaiwudb \
+            --ulimit memlock=-1 \
+            -p 26257:26257 \
+            -p 8080:8080 \
+             -v /var/lib/kaiwudb:/kaiwudb/deploy/kaiwudb-container \
+            --ipc shareable \
+            -w /kaiwudb/bin \
+            kwdb/kwdb \
+            ./kwbase start-single-node \
+                --insecure \
+                --listen-addr=0.0.0.0:26257 \
+                --http-addr=0.0.0.0:8080 \
+                --store=/kaiwudb/deploy/kaiwudb-container
+      # -
+      #   name: Download KWDB TSBS
+      #   run: |
+      #     wget https://github.com/KWDB/kwdb/releases/download/v0.1.0/kwdb_tsbs_linux_amd64.tar.gz
+      #     tar -xzvf kwdb_tsbs_linux_amd64.tar.gz
+      #     mv kwdb_tsbs_linux_amd64/kwdb_tsbs /kaiwudb/bin/kwdb_tsbs
+      -
+        name: Generate Data
+        run: |
+          cd bin
+          ./tsbs_generate_data \
+              --format="kwdb" \
+              --use-case="cpu-only" \
+              --seed=123 \
+              --scale=100 \
+              --timestamp-start="2023-01-01T00:00:00Z" \
+              --timestamp-end="2023-01-02T01:00:00Z" \
+              --log-interval="10s" \
+              --orderquantity=12 > data.dat
+      # -
+      #   name: Load Data
+      #   run: |
+      #     ./tsbs_load_kwdb \
+      #         --file=data.dat \
+      #         --user=root \
+      #         --password= \
+      #         --host=127.0.0.1 \
+      #         --port=26257 \
+      #         --insert-type=insert \
+      #         --batch-size=1000 \
+      #         --db-name=benchmark \
+      #         --case=cpu-only \
+      #         --workers=12 \
+      #         --partition=false
+      # -
+      #   name: Generate Queries
+      #   run: |
+      #    ./tsbs_generate_queries \
+      #         --format="kwdb" \
+      #         --use-case="cpu-only" \
+      #         --seed=123 \
+      #         --scale=100 \
+      #         --timestamp-start="2023-01-01T00:00:00Z" \
+      #         --timestamp-end="2023-01-05T01:00:00Z" \
+      #         --query-type="single-groupby-1-1-1" \
+      #         --queries=100 \
+      #         --db-name=benchmark > query.dat
+      # -
+      #   name: Run Queries
+      #   run: |
+      #    ./tsbs_run_queries_kwdb \
+      #         --file=query.dat \
+      #         --user=root \
+      #         --password= \
+      #         --host=127.0.0.1 \
+      #         --port=26257 \
+      #         --workers=1
+      # -
+      #   name: Docker exec
+      #   run: |
+      #     docker exec kaiwudb ./kwbase sql --insecure --host=127.0.0.1 -e "CREATE DATABASE IF NOT EXISTS testdb;"
+      #     docker exec kaiwudb ./kwbase sql --insecure --host=127.0.0.1 -e "CREATE TABLE IF NOT EXISTS testdb.public.testtable (id INT PRIMARY KEY, name VARCHAR(255));"
+      #     docker exec kaiwudb ./kwbase sql --insecure --host=127.0.0.1 -e "INSERT INTO testdb.public.testtable (id, name) VALUES (1, 'John Doe');"
+      #     docker exec kaiwudb ./kwbase sql --insecure --host=127.0.0.1 -e "INSERT INTO testdb.public.testtable (id, name) VALUES (2, 'Jane Doe');"
+      #     docker exec kaiwudb ./kwbase sql --insecure --host=127.0.0.1 -e "SELECT * FROM testdb.public.testtable;"
