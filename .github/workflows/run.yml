@@ -21,8 +21,8 @@ jobs:
             git clone https://gitee.com/kwdb/kwdb-tsbs.git
       - uses: actions/setup-go@v5
       - name: Make
+        working-directory: ./kwdb-tsbs
         run: |
-          cd kwdb-tsbs
           make
       -
         name: Docker run
@@ -48,8 +48,9 @@ jobs:
       #     mv kwdb_tsbs_linux_amd64/kwdb_tsbs /kaiwudb/bin/kwdb_tsbs
       -
         name: Generate Data
+        working-directory: ./kwdb-tsbs/bin/
         run: |
-          ./kwdb-tsbs/bin/tsbs_generate_data \
+          ./tsbs_generate_data \
               --format="kwdb" \
               --use-case="cpu-only" \
               --seed=123 \
@@ -61,11 +62,12 @@ jobs:
           ls
       -
         name: Load Data
+        working-directory: ./kwdb-tsbs/bin/
         run: |
-          ./kwdb-tsbs/bin/tsbs_load_kwdb \
+          ./tsbs_load_kwdb \
               --file=data.dat \
               --user=root \
-              --password= \
+              --pass= \
               --host=127.0.0.1 \
               --port=26257 \
               --insert-type=insert \
@@ -76,8 +78,9 @@ jobs:
               --partition=false
       -
         name: Generate Queries
+        working-directory: ./kwdb-tsbs/bin/
         run: |
-         ./kwdb-tsbs/bin/tsbs_generate_queries \
+         ./tsbs_generate_queries \
               --format="kwdb" \
               --use-case="cpu-only" \
               --seed=123 \
@@ -89,11 +92,12 @@ jobs:
               --db-name=benchmark > query.dat
       -
         name: Run Queries
+        working-directory: ./kwdb-tsbs/bin/
         run: |
-         ./kwdb-tsbs/bin/tsbs_run_queries_kwdb \
+         ./tsbs_run_queries_kwdb \
               --file=query.dat \
               --user=root \
-              --password= \
+              --pass= \
               --host=127.0.0.1 \
               --port=26257 \
               --workers=1
