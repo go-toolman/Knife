@@ -49,7 +49,8 @@ jobs:
       -
         name: Generate Data
         run: |
-          cd bin
+          ls
+          cd kwdb-tsbs/bin
           ./tsbs_generate_data \
               --format="kwdb" \
               --use-case="cpu-only" \
