@@ -3,8 +3,6 @@ name: Ubuntu
 on:
   schedule:
     - cron: '0 0 * * *'
-    - cron: '30 2 * * *'
-    - cron: '15 5 * * *' 
   workflow_dispatch:
 
 env:
@@ -38,6 +36,7 @@ jobs:
       - name: install KWDB
         working-directory: ./kwdb_install
         run: |
+          dpkg -i ./libprotobuf23_3.12.4_amd64.deb
           chmod +x ./deploy.sh
           ./deploy.sh install --single
       - name: Check status
