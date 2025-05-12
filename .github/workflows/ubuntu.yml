@@ -58,7 +58,7 @@ jobs:
         run: |
             make
       - name: Auto Script
-        working-directory: ./kwdb-tsbs/bin/
+        working-directory: ./kwdb-tsbs/scripts/
         run: |
           workspace="${GITHUB_WORKSPACE}/kwdb_install"
           ./tsbs_kwdb.sh
