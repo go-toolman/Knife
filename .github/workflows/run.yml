@@ -34,10 +34,12 @@ jobs:
       - 
         name: Check out
         uses: actions/checkout@v4
-      - 
-        name: Clone KWDB TSBS  
-        run: |
-            git clone https://gitee.com/kwdb/kwdb-tsbs.git
+        with:
+          repository: KWDB/kwdb-tsbs
+      # - 
+      #   name: Clone KWDB TSBS  
+      #   run: |
+      #       git clone https://gitee.com/kwdb/kwdb-tsbs.git
       - uses: actions/setup-go@v5
       - name: Make
         working-directory: ./kwdb-tsbs
