@@ -1,0 +1,46 @@
+name: Ubuntu
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+    - cron: '30 2 * * *'
+    - cron: '15 5 * * *' 
+  workflow_dispatch:
+
+env:
+  KWDB_URL: "https://github.com/KWDB/KWDB/releases/download/V2.2.0/KWDB-2.2.0-ubuntu22.04-x86_64-debs.tar.gz"
+  QUERY_TYPE: "high-cpu-all"
+
+jobs:
+  ubuntu:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Download KWDB
+        run: |
+          wget ${KWDB_URL}
+          tar -xzvf KWDB-2.2.0-ubuntu22.04-x86_64-debs.tar.gz
+      - name: configure KWDB
+        working-directory: ./kwdb_install
+        run: |
+          cat > deploy.cfg <<EOF
+          [global]
+          secure_mode=tls
+          management_user=kaiwudb
+          rest_port=8080
+          kaiwudb_port=26257
+          data_root=/var/lib/kaiwudb
+          cpu=1
+          encrypto_store=true
+
+          [local]
+          node_addr=127.0.0.1
+          EOF
+      - name: install KWDB
+        working-directory: ./kwdb_install
+        run: |
+          chmod +x ./deploy.sh
+          ./deploy.sh install --single
+      - name: Check status
+        working-directory: ./kwdb_install
+        run: |
+          ./deploy.sh status
