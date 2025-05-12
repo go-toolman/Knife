@@ -36,7 +36,8 @@ jobs:
       - name: install KWDB
         working-directory: ./kwdb_install
         run: |
-          sudo dpkg -i ./packages/libprotobuf23_3.12.4_amd64.deb
+          sudo apt update
+          sudo apt install libprotobuf23 
           chmod +x ./deploy.sh
           ./deploy.sh install --single
       - name: Check status
