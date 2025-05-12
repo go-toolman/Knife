@@ -47,7 +47,7 @@ jobs:
         run: |
           ./deploy.sh start
           ./deploy.sh status
-          ls /
+          ls /root
       - name: Check out KWDB TSBS
         uses: actions/checkout@v4
         with:
@@ -63,5 +63,5 @@ jobs:
         working-directory: ./kwdb-tsbs/scripts/
         run: |
           chmod +x ./tsbs_kwdb.sh
-          workspace="/" ./tsbs_kwdb.sh
+          workspace="/root" ./tsbs_kwdb.sh
 
