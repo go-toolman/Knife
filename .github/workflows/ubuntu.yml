@@ -40,7 +40,26 @@ jobs:
           sudo apt install libprotobuf23 
           chmod +x ./deploy.sh
           ./deploy.sh install --single
-      - name: Check status
+          systemctl daemon-reload
+      - name: Start KWDB
         working-directory: ./kwdb_install
         run: |
+          ./deploy.sh start
           ./deploy.sh status
+      - name: Check out KWDB TSBS
+        uses: actions/checkout@v4
+        with:
+          repository: KWDB/kwdb-tsbs
+          path: kwdb-tsbs
+          fetch-depth: 0
+      - uses: actions/setup-go@v5
+      - name: Make
+        working-directory: ./kwdb-tsbs
+        run: |
+            make
+      - name: Auto Script
+        working-directory: ./kwdb-tsbs/bin/
+        run: |
+          workspace="${GITHUB_WORKSPACE}/kwdb_install"
+          ./tsbs_kwdb.sh
+
