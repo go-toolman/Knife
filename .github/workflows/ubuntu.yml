@@ -47,6 +47,8 @@ jobs:
         run: |
           ./deploy.sh start
           ./deploy.sh status
+      - name: Check Out
+        uses: actions/checkout@v4
       - name: Check out KWDB TSBS
         uses: actions/checkout@v4
         with:
@@ -58,8 +60,6 @@ jobs:
         working-directory: ./kwdb-tsbs
         run: |
             make
-      - name: Checkout
-        uses: actions/checkout@v4
       - name: mv script
         run: |
           ls
