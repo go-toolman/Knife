@@ -17,7 +17,7 @@ jobs:
         run: |
           wget ${KWDB_URL}
           tar -xzvf KWDB-2.2.0-ubuntu22.04-x86_64-debs.tar.gz
-      - name: configure KWDB
+      - name: Configure KWDB
         working-directory: ./kwdb_install
         run: |
           cat > deploy.cfg <<EOF
@@ -36,6 +36,7 @@ jobs:
       - name: install KWDB
         working-directory: ./kwdb_install
         run: |
+          cat deploy.cfg
           sudo apt update
           sudo apt install libprotobuf23 
           chmod +x ./deploy.sh
@@ -46,6 +47,7 @@ jobs:
         run: |
           ./deploy.sh start
           ./deploy.sh status
+          ls /usr/local/kaiwudb/
       - name: Check out KWDB TSBS
         uses: actions/checkout@v4
         with:
@@ -61,5 +63,5 @@ jobs:
         working-directory: ./kwdb-tsbs/scripts/
         run: |
           chmod +x ./tsbs_kwdb.sh
-          workspace="${GITHUB_WORKSPACE}/kwdb_install" ./tsbs_kwdb.sh
+          workspace="/usr/local/kaiwudb/" ./tsbs_kwdb.sh
 
