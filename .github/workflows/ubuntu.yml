@@ -25,7 +25,7 @@ jobs:
           secure_mode=tls
           management_user=kaiwudb
           rest_port=8080
-          kaiwudb_port=26257
+          kaiwudb_port=29257
           data_root=/var/lib/kaiwudb
           cpu=1
           encrypto_store=true
@@ -47,7 +47,6 @@ jobs:
         run: |
           ./deploy.sh start
           ./deploy.sh status
-          ls //usr/local/kaiwudb/bin
       - name: Check out KWDB TSBS
         uses: actions/checkout@v4
         with:
@@ -61,7 +60,11 @@ jobs:
             make
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Auto Script
+      - name: mv script
         run: |
-          workspace="/usr/local/kaiwudb" ./tsbs_kwdb.sh
+          mv -f ./tsbs_kwdb.sh ./kwdb-tsbs/scripts/tsbs_kwdb.sh
+      - name: Auto Script
+        working-directory: ./kwdb-tsbs/scripts/
+        run: |
+          workspace="/usr/local/kaiwudb" sudo ./tsbs_kwdb.sh
 
