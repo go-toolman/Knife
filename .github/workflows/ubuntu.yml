@@ -59,6 +59,8 @@ jobs:
         working-directory: ./kwdb-tsbs
         run: |
             make
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: Auto Script
         run: |
           workspace="/usr/local/kaiwudb" ./tsbs_kwdb.sh
