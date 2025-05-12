@@ -68,4 +68,8 @@ jobs:
         working-directory: ./kwdb-tsbs/scripts/
         run: |
           sudo workspace="/usr/local/kaiwudb" ./tsbs_kwdb.sh
-
+      - name: Archive code coverage results
+        uses: actions/upload-artifact@v4
+        with:
+          name: kwdb-tsbs-report
+          path: kwdb-tsbs/reports/
