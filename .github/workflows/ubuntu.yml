@@ -62,6 +62,7 @@ jobs:
         uses: actions/checkout@v4
       - name: mv script
         run: |
+          ls
           mv -f ./tsbs_kwdb.sh ./kwdb-tsbs/scripts/tsbs_kwdb.sh
       - name: Auto Script
         working-directory: ./kwdb-tsbs/scripts/
