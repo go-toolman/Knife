@@ -61,5 +61,6 @@ jobs:
         working-directory: ./kwdb-tsbs/scripts/
         run: |
           workspace="${GITHUB_WORKSPACE}/kwdb_install"
+          chmod +x ./tsbs_kwdb.sh
           ./tsbs_kwdb.sh
 
