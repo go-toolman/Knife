@@ -67,5 +67,5 @@ jobs:
       - name: Auto Script
         working-directory: ./kwdb-tsbs/scripts/
         run: |
-          workspace="/usr/local/kaiwudb" sudo ./tsbs_kwdb.sh
+          sudo workspace="/usr/local/kaiwudb" ./tsbs_kwdb.sh
 
