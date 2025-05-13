@@ -17,6 +17,13 @@ jobs:
       -
         name: Set up Docker
         uses: docker/setup-docker-action@v4
+      - name: Cycle
+        run: |
+          for i in {1..10}; do
+            docker pull kwdb/kwdb
+            docker rmi kwdb/kwdb || true
+            echo "Completed cycle $i"
+          done
       -
         name: Docker run
         run: |
@@ -40,21 +47,11 @@ jobs:
           repository: KWDB/kwdb-tsbs
           path: kwdb-tsbs
           fetch-depth: 0
-      # - 
-      #   name: Clone KWDB TSBS  
-      #   run: |
-      #       git clone https://gitee.com/kwdb/kwdb-tsbs.git
       - uses: actions/setup-go@v5
       - name: Make
         working-directory: ./kwdb-tsbs
         run: |
           make
-      # -
-      #   name: Download KWDB TSBS
-      #   run: |
-      #     wget https://github.com/KWDB/kwdb/releases/download/v0.1.0/kwdb_tsbs_linux_amd64.tar.gz
-      #     tar -xzvf kwdb_tsbs_linux_amd64.tar.gz
-      #     mv kwdb_tsbs_linux_amd64/kwdb_tsbs /kaiwudb/bin/kwdb_tsbs
       -
         name: Generate Data
         working-directory: ./kwdb-tsbs/bin/
