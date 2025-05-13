@@ -7,7 +7,6 @@ on:
 
 env:
   KWDB_URL: "https://github.com/KWDB/KWDB/releases/download/V2.2.0/KWDB-2.2.0-ubuntu22.04-x86_64-debs.tar.gz"
-  QUERY_TYPE: "high-cpu-all"
 
 jobs:
   ubuntu:
