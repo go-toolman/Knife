@@ -61,7 +61,7 @@ jobs:
       - name: Make
         working-directory: ./kwdb-tsbs
         run: |
-          make
+          make generators tsbs_load_kwdb tsbs_run_queries_kwdb
       -
         name: Generate Data
         working-directory: ./kwdb-tsbs/bin/
