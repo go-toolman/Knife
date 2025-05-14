@@ -59,6 +59,13 @@ jobs:
         working-directory: ./kwdb-tsbs
         run: |
             make
+      - name: Cache
+        uses: actions/cache@v3
+        with:
+          path: kwdb-tsbs/go.sum
+          key: ${{ runner.os }}-kwdb-tsbs-${{ hashFiles('kwdb-tsbs/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-kwdb-tsbs-
       - name: mv script
         run: |
           ls
