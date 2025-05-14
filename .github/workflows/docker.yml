@@ -48,6 +48,16 @@ jobs:
           path: kwdb-tsbs
           fetch-depth: 0
       - uses: actions/setup-go@v5
+      - name: Cache
+        uses: actions/cache@v3
+        with:
+          path: |
+              kwdb-tsbs/go.sum
+              ~/go/pkg/mod
+              ~/.cache/go-build
+          key: ${{ runner.os }}-kwdb-tsbs-${{ hashFiles('kwdb-tsbs/go.sum') }}
+          restore-keys: |
+              ${{ runner.os }}-kwdb-tsbs-
       - name: Make
         working-directory: ./kwdb-tsbs
         run: |
