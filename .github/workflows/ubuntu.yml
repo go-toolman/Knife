@@ -75,7 +75,7 @@ jobs:
       - name: Auto Script
         working-directory: ./kwdb-tsbs/scripts/
         run: |
-          sudo workspace="/usr/local/kaiwudb" ./tsbs_kwdb.sh
+          sudo workspace="/usr/local/kaiwudb" ports=29257 ./tsbs_kwdb.sh
       - name: Archive code coverage results
         uses: actions/upload-artifact@v4
         with:
