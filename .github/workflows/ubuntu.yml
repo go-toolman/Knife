@@ -7,6 +7,17 @@ on:
 
 env:
   KWDB_URL: "https://github.com/KWDB/KWDB/releases/download/V2.2.0/KWDB-2.2.0-ubuntu22.04-x86_64-debs.tar.gz"
+  JDBC: "https://github.com/KWDB/KWDB/releases/download/V2.2.0/kaiwudb-jdbc-2.2.0.jar"
+  KAFKA: "https://github.com/KWDB/KWDB/releases/download/V2.2.0/KaiwuDB-Kafka-Connect-2.0.2.zip"
+  DATAX: "https://github.com/KWDB/KWDB/releases/download/V2.2.0/KaiwuDB_datax-2.2.0.zip"
+  KDC_X86: "https://github.com/KWDB/KWDB/releases/download/V2.2.0/KaiwuDB_Developer_Center-2.0.4-linux-x86_64.tar.gz"
+  KDC_MAC: "https://github.com/KWDB/KWDB/releases/download/V2.2.0/KaiwuDB_Developer_Center-2.0.4-mac-x86_64.tar.gz"
+  KDC_WIN: "https://github.com/KWDB/KWDB/releases/download/V2.2.0/KaiwuDB_Developer_Center-2.0.4-win-x86_64.zip"
+  KY_ARM: "https://github.com/KWDB/KWDB/releases/download/V2.2.0/KWDB-2.2.0-kylinV10_2403-aarch64-rpms.tar.gz"
+  KY_X86: "https://github.com/KWDB/KWDB/releases/download/V2.2.0/KWDB-2.2.0-kylinV10_2403-x86_64-rpms.tar.gz"
+  UB_20_X86: "https://github.com/KWDB/KWDB/releases/download/V2.2.0/KWDB-2.2.0-ubuntu20.04-x86_64-debs.tar.gz"
+  UB_20_ARM: "https://github.com/KWDB/KWDB/releases/download/V2.2.0/KWDB-2.2.0-ubuntu22.04-aarch64-docker.tar.gz"
+  UB_22_ARM: "https://github.com/KWDB/KWDB/releases/download/V2.2.0/KWDB-2.2.0-ubuntu22.04-x86_64-docker.tar.gz"
 
 jobs:
   ubuntu:
@@ -14,13 +25,18 @@ jobs:
     steps:
       - name: Download KWDB
         run: |
-          RANDOM_COUNT=$((RANDOM%101+50))
-          for i in $(seq 1 $RANDOM_COUNT); do
-            wget ${KWDB_URL}
-            rm -rf KWDB-2.2.0-ubuntu22.04-x86_64-debs.tar.gz || true
-            echo "Completed cycle $i"
-          done
           wget ${KWDB_URL}
+          wget ${JDBC}
+          wget ${KAFKA}
+          wget ${DATAX}
+          wget ${KDC_X86}
+          wget ${KDC_MAC}
+          wget ${KDC_WIN}
+          wget ${KY_ARM} 
+          wget ${KY_X86}
+          wget ${UB_20_X86}
+          wget ${UB_20_ARM}
+          wget ${UB_22_ARM}
           tar -xzvf KWDB-2.2.0-ubuntu22.04-x86_64-debs.tar.gz
       - name: Configure KWDB
         working-directory: ./kwdb_install
