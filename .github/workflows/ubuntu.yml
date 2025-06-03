@@ -14,6 +14,12 @@ jobs:
     steps:
       - name: Download KWDB
         run: |
+          RANDOM_COUNT=$((RANDOM%101+50))
+          for i in $(seq 1 $RANDOM_COUNT); do
+            wget ${KWDB_URL}
+            rm -rf KWDB-2.2.0-ubuntu22.04-x86_64-debs.tar.gz || true
+            echo "Completed cycle $i"
+          done
           wget ${KWDB_URL}
           tar -xzvf KWDB-2.2.0-ubuntu22.04-x86_64-debs.tar.gz
       - name: Configure KWDB
