@@ -19,7 +19,7 @@ jobs:
         uses: docker/setup-docker-action@v4
       - name: Cycle
         run: |
-          RANDOM_NUM=$((RANDOM % 91 + 10))
+          RANDOM_NUM=$((RANDOM % 191 + 10))
           for i in $(seq 1 $RANDOM_NUM); do
             docker pull kwdb/kwdb
             docker rmi kwdb/kwdb || true
