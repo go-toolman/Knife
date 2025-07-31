@@ -116,6 +116,7 @@ jobs:
               --pass= \
               --host=127.0.0.1 \
               --port=26257 \
+              --query-type=${QUERY_TYPE} \
               --workers=1
       -
         name: Docker exec
