@@ -3,8 +3,9 @@ name: Docker
 on:
   schedule:
     - cron: '0 0 * * *'
-    - cron: '30 2 * * *'
-    - cron: '15 5 * * *' 
+    - cron: '30 5 * * *'
+    - cron: '15 10 * * *'
+    - cron: '0 15 * * *'
   workflow_dispatch:
 
 env:
@@ -19,7 +20,7 @@ jobs:
         uses: docker/setup-docker-action@v4
       - name: Cycle
         run: |
-          RANDOM_NUM=$((RANDOM % 50 + 10))
+          RANDOM_NUM=$((RANDOM % 80 + 10))
           for i in $(seq 1 $RANDOM_NUM); do
             docker pull kwdb/kwdb
             docker rmi kwdb/kwdb || true
